@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Online Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+  <header class="border-bottom lh-1 py-3">
+    <div class="row flex-nowrap justify-content-between align-items-center">
+      <div class="col-4 pt-1">
+        <a class="blog-header-logo text-body-emphasis text-decoration-none" href="/home">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+            </svg>
+            <h4>MerrBio</h4>
+        </a>
+      </div>
+      <div class="col-3 text-center">
+        <a class="blog-header-logo text-body-emphasis text-decoration-none" href="/home">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
+                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
+                <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/>
+            </svg>
+        </a>
+      </div>
+      <div class="col-5 d-flex justify-content-end align-items-center">
+        <div class="col-4 pt-1">
+        <a class="link-dark text-decoration-underline" href="{{ url_for('produktet_fermer') }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="bi bi-cart3" viewBox="0 1 16 16">
+                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+            </svg>
+            Produktet e tua
+        </a>
+      </div>
+    </div>
+    </div>
+  </header>
+
+
+<div class="container marketing py-5">
+
+    <div class="row">
+    <h3 class="display-5 fst-normal fw-semibold col-8">Produktet e tua</h3>
+    <a href="{{ url_for('add_product') }}"><button class="btn btn-primary rounded-pill px-2 py-1 col-4" type="submit" style="width: 180px; height: 50px">+ Shto produkt</button></a>
+    </div>
+    <hr class="featurette-divider">
+
+
+
+    {% for product in products: %}
+    <div class="row featurette py-5">
+      <div class="col-md-6">
+          <h2 class="featurette-heading fw-normal lh-1">{{ product.name }}</h2>
+          <input type="hidden" name="name" value="{{ product['name'] }}">
+          <p class="lead">{{ product.description }}</p>
+          <p class="lead fw-semibold">Çmimi: L{{ product.price }} ALL</p>
+          <input type="hidden" name="price" value="{{ product['price'] }}">
+          <form method="POST" action="/produktet-e-tua">
+              <input type="hidden" id="product_id" name="product_id" value="{{ product.id }}">
+              <input type="hidden" id="price_id" name="price_id" value="{{ product.price_id }}">
+              <label for="new_price">New Price:</label>
+              <input type="number" name="new_price" id="new_price" step="0.01" min="0" required>
+            <button class="btn btn-primary rounded-pill px-3 col-3" name="action" type="submit" value="edit">✎ Ndrysho çmimin</button>
+          </form>
+          <div class="py-2"></div>
+          <form method="POST" action="/produktet-e-tua">
+              <input type="hidden" name="action" value="delete">
+              <input type="hidden" name="product_id" value="{{ product.id }}">
+              <button class="btn btn-danger rounded-pill px-3 col-3" type="submit">X Fshi</button>
+          </form>
+
+      </div>
+      <div class="col-md-4 col-4">
+          <img src="{{ product.image }}" width="250" height="200" style="object-fit: cover">
+      </div>
+    </div>
+
+    <hr class="featurette-divider">
+    {% endfor %}
+
+ </div>
+
+<div class="container">
+    <footer class="py-3 mt-auto">
+        <p class="text-center text-body-secondary border-top pb-3 mb-3 py-2">© 2025 E-Shop</p>
+    </footer>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+          crossorigin="anonymous"></script>
+
+</body>
+</html>
